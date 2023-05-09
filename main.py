@@ -1,12 +1,15 @@
 from audio import *
 from PCA9685 import *
 
-while True:
-    try:
-        peak = streamAudio()
-        print(peak)
 
-    except KeyboardInterrupt:
-        print('Interrupted')
-        closeAudio()
+if __name__ == '__main__':
+    set_servo_angle(7, 90)
+    while True:
+        try:
+            peak = streamAudio()
+            print(peak)
+
+        except KeyboardInterrupt:
+            print('Interrupted')
+            closeAudio()
         
