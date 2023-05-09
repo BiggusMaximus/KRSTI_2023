@@ -1,25 +1,34 @@
-import paho.mqtt.client as mqtt 
 import time
-
-broker_address="192.168.18.45"
-
-def on_message(client, userdata, message):
-    print("message received " ,str(message.payload.decode("utf-8")))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
-
-def on_log(client, userdata, level, buf):
-    print("log: ",buf)
+import paho.mqtt.client as mqtt
 
 
-print("creating new instance")
-client = mqtt.Client("KRI") #create new instance
-client.on_message=on_message #attach function to callback
-print("connecting to broker")
-client.connect(broker_address) #connect to broker
+def on_publish(client, userdata, mid):
+    print("message published")
+
+
+client = mqtt.Client("KRI") #this name should be unique
+client.on_publish = on_publish
+client.connect('127.0.0.1', 1883)
+client.loop_start()
+
+k=0
 
 while True:
-    print("Publishing message to topic")
-    client.publish("KRSTI/data", "kontol")
-    time.sleep(4) # wait
+    k=k+1
+    if(k>20):
+        k=1 
+        
+    try:
+        msg =str(k)
+        pubMsg = client.publish(
+            topic='KRSTI/data',
+            payload=msg.encode('utf-8'),
+            qos=0,
+        )
+        pubMsg.wait_for_publish()
+        print(pubMsg.is_published())
+    
+    except Exception as e:
+        print(e)
+        
+    time.sleep(2)
