@@ -7,7 +7,7 @@ const char *ssid = "Butuh wifi";
 const char *password = "mintamulu";
 
 // Replace your MQTT Broker IP address here:
-const char *mqtt_server = "192.168.18.45";
+const char *mqtt_server = "127.0.0.1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -60,24 +60,16 @@ void connect_mqttServer()
   // Loop until we're reconnected
   while (!client.connected())
   {
-
-    // first check if connected to wifi
     if (WiFi.status() != WL_CONNECTED)
     {
-      // if not connected, then first connect to wifi
       setup_wifi();
     }
 
-    // now attemt to connect to MQTT server
     Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
-    if (client.connect("ESP32_client1"))
-    { // Change the name of client here if multiple ESP32 are connected
-      // attempt successful
+    if (client.connect("KRI"))
+    {
       Serial.println("connected");
-      // Subscribe to topics here
-      client.subscribe("rpi/broadcast");
-      // client.subscribe("rpi/xyz"); //subscribe more topics here
+      client.subscribe("KRSTI/data");
     }
     else
     {
@@ -86,8 +78,7 @@ void connect_mqttServer()
       Serial.print(client.state());
       Serial.println(" trying again in 2 seconds");
 
-      blink_led(3, 200); // blink LED three times (200ms on duration) to show that MQTT server connection attempt failed
-      // Wait 2 seconds before retrying
+      blink_led(3, 200);
       delay(2000);
     }
   }
@@ -106,19 +97,8 @@ void callback(char *topic, byte *message, unsigned int length)
     Serial.print((char)message[i]);
     messageTemp += (char)message[i];
   }
+  Serial.print(messageTemp);
   Serial.println();
-
-  // Check if a message is received on the topic "rpi/broadcast"
-  if (String(topic) == "rpi/broadcast")
-  {
-    if (messageTemp == "10")
-    {
-      Serial.println("Action: blink LED");
-      blink_led(1, 1250); // blink LED once (for 1250ms ON time)
-    }
-  }
-
-  // Similarly add more if statements to check for other subscribed topics
 }
 
 void setup()
@@ -138,14 +118,5 @@ void loop()
   {
     connect_mqttServer();
   }
-
   client.loop();
-
-  long now = millis();
-  if (now - lastMsg > 4000)
-  {
-    lastMsg = now;
-
-    client.publish("esp32/sensor1", "88"); // topic name (to which this ESP32 publishes its data). 88 is the dummy value.
-  }
 }

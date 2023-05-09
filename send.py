@@ -5,10 +5,13 @@ import paho.mqtt.client as mqtt
 def on_publish(client, userdata, mid):
     print("message published")
 
+def on_log(client, userdata, level, buf):
+    print("log: ",buf)
 
 client = mqtt.Client("KRI") #this name should be unique
 client.on_publish = on_publish
-client.connect('127.0.0.1', 1883)
+client.on_log=on_log
+client.connect('192.168.18.45', 1883)
 client.loop_start()
 
 k=0

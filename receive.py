@@ -16,6 +16,9 @@ def on_disconnect(client, userdata, rc):
 def callback_esp32_sensor1(client, userdata, msg):
     print('ESP sensor1 data: ', msg.payload.decode('utf-8'))
 
+def on_log(client, userdata, level, buf):
+    print("log: ",buf)
+
 def client_subscriptions(client):
     client.subscribe('KRSTI/data')
 
@@ -24,6 +27,7 @@ client = mqtt.Client("rpi_client1") #this should be a unique name
 flag_connected = 0
 
 client.on_connect = on_connect
+client.on_log=on_log
 client.on_disconnect = on_disconnect
 client.message_callback_add('KRSTI/data', callback_esp32_sensor1)
 client.connect('127.0.0.1',1883)
