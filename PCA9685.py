@@ -33,7 +33,9 @@ def innitServo():
 
     kepala                        = ServoPCA9685(7, 0)
     print("Servo innit")
-    
+
 def reset():
     for i in [pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala]:
         i.reset()
+
+innitServo()
