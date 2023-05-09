@@ -18,11 +18,11 @@ if __name__ == '__main__':
             if peak > args.thr:
                 print("kontol")
                 kepala.move(180)
-                sendData("kontol")
+                send_request("kontol")
             else:
                 print("kasu")
                 kepala.move(0)
-                sendData("asu")
+                send_request("asu")
 
         except KeyboardInterrupt:
             print('Interrupted')
