@@ -15,14 +15,22 @@ if __name__ == '__main__':
     while True:
         try:
             peak = streamAudio()
-            if peak > args.thr:
-                print("kontol")
+            print(peak)
+            
+            # Kalo gak ada suara
+            if peak < args.thr:
+                IS_MUSIC_ON = False
                 kepala.move(180)
-                send_request("kontol")
+                
+            # Kalo ada suara
             else:
-                print("kasu")
+                if not IS_MUSIC_ON:
+                    print("send data")
+                    send_request("tempik")
+                    IS_MUSIC_ON = True
+                    
                 kepala.move(0)
-                send_request("asu")
+
 
         except KeyboardInterrupt:
             print('Interrupted')

@@ -3,6 +3,7 @@ import numpy as np
 
 CHUNK = 2**11
 RATE = 44100
+IS_MUSIC_ON = True
 
 p=pyaudio.PyAudio()
 stream=p.open(
