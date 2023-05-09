@@ -31,7 +31,7 @@ def innitServo():
     # pundakEngsel_tangan_kiri    = ServoPCA9685(7, 0)
     # pundakPutar_tangan_kiri     = ServoPCA9685(8, 0)
 
-    kepala                        = ServoPCA9685(7, 0)
+    kepala                        = ServoPCA9685(0, 0)
     print("Servo innit")
 
 def reset():
