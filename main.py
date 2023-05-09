@@ -18,10 +18,11 @@ if __name__ == '__main__':
             if peak > 500:
                 print("kontol")
                 kepala.move(180)
-                send_data("kontol memek")
+                client_socket.send('Hello, ESP32!'.encode())
             else:
+                print("kasu")
                 kepala.move(0)
-                send_data("kontol jembut")
+                client_socket.send('Hello, ESP32!'.encode())
             
         except KeyboardInterrupt:
             print('Interrupted')

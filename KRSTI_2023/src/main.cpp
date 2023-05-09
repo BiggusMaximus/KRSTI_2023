@@ -1,51 +1,31 @@
 #include <WiFi.h>
-#include <HTTPClient.h>
 
 const char *ssid = "Butuh wifi";
 const char *password = "mintamulu";
 
+IPAddress serverIP(192, 168, 1, 100); // IP address of the Raspberry Pi
+const int serverPort = 5005;          // port number to use
+
 void setup()
 {
-
   Serial.begin(115200);
-
   WiFi.begin(ssid, password);
-
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
-    Serial.println("Connecting to WiFi..");
+    Serial.println("Connecting to WiFi...");
   }
-
-  Serial.println("Connected to the WiFi network");
+  Serial.println(WiFi.localIP());
+  Serial.println("Connected to WiFi");
 }
 
 void loop()
 {
-
-  if ((WiFi.status() == WL_CONNECTED))
+  // wait for data from the Raspberry Pi
+  if (Serial.available() > 0)
   {
-
-    HTTPClient http;
-
-    http.begin("http://192.168.18.45:8090/data");
-    int httpCode = http.GET();
-
-    if (httpCode > 0)
-    {
-
-      String payload = http.getString();
-      Serial.println(httpCode);
-      Serial.println(payload);
-    }
-
-    else
-    {
-      Serial.println("Error on HTTP request");
-    }
-
-    http.end();
+    // read the incoming data
+    String data = Serial.readString();
+    Serial.println("Received data: " + data);
   }
-
-  delay(20000);
 }
