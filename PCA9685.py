@@ -7,6 +7,7 @@ class ServoPCA9685:
         self.ZeroOffset = ZeroOffset
         self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
         self.pwm.set_pwm_freq(int(60))
+        self.current_pos = 90
 
     def move(self, pos, speed=1.0):
         current_pos = self.current_pos
