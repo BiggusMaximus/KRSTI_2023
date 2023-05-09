@@ -16,6 +16,9 @@ if __name__ == '__main__':
             peak = streamAudio()
             if peak > 500:
                 print("kontol")
+                kepala.move(180)
+            else:
+                kepala.move(0)
             
         except KeyboardInterrupt:
             print('Interrupted')
