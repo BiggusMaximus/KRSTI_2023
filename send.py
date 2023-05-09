@@ -8,6 +8,7 @@ ESP32_PORT = 1234
 # Create a socket and connect to the ESP32
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((ESP32_IP, ESP32_PORT))
+print("Socket Innit")
 
 # Send a string and a boolean to the ESP32
 
