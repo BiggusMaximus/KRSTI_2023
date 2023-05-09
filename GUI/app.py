@@ -1,62 +1,63 @@
 import tkinter as tk
-import board
-import busio
-import adafruit_pca9685
-from adafruit_servokit import ServoKit
+import Adafruit_PCA9685
 
-# Initialize the PCA9685 board
-i2c = busio.I2C(board.SCL, board.SDA)
-pca = adafruit_pca9685.PCA9685(i2c)
-kit = ServoKit(channels=16)
 N_SERVO = 1
+class ServoPCA9685:
+    def __init__(self, Channel, ZeroOffset):
+        self.Channel = Channel
+        self.ZeroOffset = ZeroOffset
+        self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
+        self.pwm.set_pwm_freq(int(60))
+        # Move to 90 degree first
+        self.move(90)
 
+    def move(self, pos):
+        pulse = int((650-150)/180*pos+150+self.ZeroOffset)
+        self.pwm.set_pwm(self.Channel, 0, pulse)
+
+    def reset(self):
+        self.move(int(90))
+        print('RESET TO 90')
+
+# Initialize the servo objects
+servos = []
+for i in range(N_SERVO):
+    servos.append(ServoPCA9685(i, 0))
+
+# Create the GUI
+root = tk.Tk()
+root.title("PCA9685 Servo Control")
+root.geometry("500x500")
 
 # Define the servo names
 servo_names = ["Servo 1", "Servo 2", "Servo 3", "Servo 4", "Servo 5", "Servo 6", "Servo 7", "Servo 8", "Servo 9", "Servo 10", "Servo 11", "Servo 12", "Servo 13", "Servo 14", "Servo 15", "Servo 16"]
-
-# Initialize the list of checkboxes to keep track of which servos are selected
+# Create the servo checkboxes
 servo_checkboxes = []
-
-# Define the functions to move the servos up and down
-def move_servo_up(servo_index):
-    if servo_checkboxes[servo_index].get() == 1:
-        current_value = int(kit.servo[servo_index].angle)
-        if current_value < 180:
-            kit.servo[servo_index].angle = current_value + 1
-
-def move_servo_down(servo_index):
-    if servo_checkboxes[servo_index].get() == 1:
-        current_value = int(kit.servo[servo_index].angle)
-        if current_value > 0:
-            kit.servo[servo_index].angle = current_value - 1
-
-# Create the main window
-root = tk.Tk()
-root.title("PCA9685 Servo Control")
-
-# Define the frame to contain the servo labels, entry boxes, and checkboxes
-frame = tk.Frame(root, bd=2, relief="ridge")
-frame.pack(side="left", fill="both", expand=True)
-
-# Create the servo labels and checkboxes
 for i in range(N_SERVO):
-    servo_label = tk.Label(frame, text=servo_names[i])
-    servo_label.pack(side="top", fill="x", padx=5, pady=5)
+    servo_checkboxes.append(tk.BooleanVar(value=True))
 
+# Create the servo labels and up/down buttons
+frame = tk.Frame(root)
+frame.pack(expand=True, fill="both")
+for i in range(N_SERVO):
+    # Servo label
+    servo_label = tk.Label(frame, text=servo_names[i], width=8, anchor="w")
+    servo_label.grid(row=i, column=0, padx=(5,0), pady=(5,0))
+
+    # Servo checkbox
     servo_checkbox = tk.Checkbutton(frame, text="", variable=servo_checkboxes[i])
-    servo_checkbox.pack(side="left", padx=5, pady=5)
-    servo_checkboxes.append(servo_checkbox)
+    servo_checkbox.grid(row=i, column=1, padx=0, pady=(5,0))
 
-# Create the up and down buttons for each servo
-button_frame = tk.Frame(root, bd=2, relief="ridge")
-button_frame.pack(side="right", fill="y")
+    # Servo up button
+    servo_up_button = tk.Button(frame, text="↑", width=2, command=lambda i=i: servos[i].move(int(90)+5))
+    servo_up_button.grid(row=i, column=2, padx=0, pady=(5,0))
 
-for i in range(N_SERVO):
-    up_button = tk.Button(button_frame, text="↑", command=lambda index=i: move_servo_up(index))
-    up_button.pack(side="top", fill="x", padx=5, pady=5)
+    # Servo down button
+    servo_down_button = tk.Button(frame, text="↓", width=2, command=lambda i=i: servos[i].move(int(90)-5))
+    servo_down_button.grid(row=i, column=3, padx=0, pady=(5,0))
 
-    down_button = tk.Button(button_frame, text="↓", command=lambda index=i: move_servo_down(index))
-    down_button.pack(side="top", fill="x", padx=5, pady=5)
+# Quit button
+quit_button = tk.Button(root, text="Quit", command=root.quit)
+quit_button.pack(side="bottom", pady=10)
 
-# Start the main loop
 root.mainloop()
