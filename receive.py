@@ -22,6 +22,9 @@ def on_log(client, userdata, level, buf):
 def client_subscriptions(client):
     client.subscribe('KRSTI/data')
 
+def on_log(client, userdata, level, buf):
+    print("log: ",buf)
+
 
 client = mqtt.Client("rpi_client1") #this should be a unique name
 flag_connected = 0
