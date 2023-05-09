@@ -1,11 +1,11 @@
 import time
 import board
 import busio
-import adafruit_pca9685
+import Adafruit_PCA9685
 
 # Initialize I2C bus and PCA9685 module
 i2c = busio.I2C(board.SCL, board.SDA)
-pca = adafruit_pca9685.PCA9685(i2c)
+pca = Adafruit_PCA9685.PCA9685(i2c)
 
 pca.frequency = 50
 
