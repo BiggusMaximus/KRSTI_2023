@@ -3,29 +3,50 @@
 const char *ssid = "Butuh wifi";
 const char *password = "mintamulu";
 
-IPAddress serverIP(192, 168, 18, 168); // IP address of the Raspberry Pi
-const int serverPort = 5005;           // port number to use
+WiFiServer wifiServer(80);
 
 void setup()
 {
+
   Serial.begin(115200);
+
+  delay(1000);
+
   WiFi.begin(ssid, password);
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
-    Serial.println("Connecting to WiFi...");
+    Serial.println("Connecting to WiFi..");
   }
+
+  Serial.println("Connected to the WiFi network");
   Serial.println(WiFi.localIP());
-  Serial.println("Connected to WiFi");
+
+  wifiServer.begin();
 }
 
 void loop()
 {
-  // wait for data from the Raspberry Pi
-  if (Serial.available() > 0)
+
+  WiFiClient client = wifiServer.available();
+
+  if (client)
   {
-    // read the incoming data
-    String data = Serial.readString();
-    Serial.println("Received data: " + data);
+
+    while (client.connected())
+    {
+
+      while (client.available() > 0)
+      {
+        char c = client.read();
+        client.write(c);
+      }
+
+      delay(10);
+    }
+
+    client.stop();
+    Serial.println("Client disconnected");
   }
 }
