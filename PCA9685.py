@@ -5,7 +5,7 @@ import Adafruit_PCA9685
 
 # Initialize I2C bus and PCA9685 module
 i2c = busio.I2C(board.SCL, board.SDA)
-pca = Adafruit_PCA9685.PCA9685(i2c)
+pca = Adafruit_PCA9685.PCA9685(address=0x40)
 
 pca.frequency = 50
 
