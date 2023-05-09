@@ -19,7 +19,8 @@ client.on_message=on_message #attach function to callback
 print("connecting to broker")
 client.connect(broker_address) #connect to broker
 
+print("Subscribing to topic")
+
 while True:
-    print("Publishing message to topic")
-    client.publish("KRSTI/data", "kontol")
+    client.subscribe("KRSTI/data")
     time.sleep(4) # wait
