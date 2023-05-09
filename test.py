@@ -1,35 +1,45 @@
-import time    #https://docs.python.org/fr/3/library/time.html
-from adafruit_servokit import ServoKit    #https://circuitpython.readthedocs.io/projects/servokit/en/latest/
-#Constants
-nbPCAServo=16 
-#Parameters
-MIN_IMP  =[500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
-MAX_IMP  =[2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500]
-MIN_ANG  =[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-MAX_ANG  =[180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180]
-#Objects
-pca = ServoKit(channels=16)
-# function init 
-def init():
-    for i in range(nbPCAServo):
-        pca.servo[i].set_pulse_width_range(MIN_IMP[i] , MAX_IMP[i])
-# function main 
-def main():
-    pcaScenario()
-# function pcaScenario 
-def pcaScenario():
-    """Scenario to test servo"""
-    for i in range(nbPCAServo):
-        for j in range(MIN_ANG[i],MAX_ANG[i],1):
-            print("Send angle {} to Servo {}".format(j,i))
-            pca.servo[i].angle = j
-            time.sleep(0.01)
-        for j in range(MAX_ANG[i],MIN_ANG[i],-1):
-            print("Send angle {} to Servo {}".format(j,i))
-            pca.servo[i].angle = j
-            time.sleep(0.01)
-        pca.servo[i].angle=None #disable channel
-        time.sleep(0.5)
+import Adafruit_PCA9685
+import time
+
+class servo_Class:
+    #"Channel" is the channel for the servo motor on PCA9685
+    #"ZeroOffset" is a parameter for adjusting the reference position of the servo motor
+    def __init__(self, Channel, ZeroOffset):
+        self.Channel = Channel
+        self.ZeroOffset = ZeroOffset
+
+        #Initialize Adafruit_PCA9685
+        self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
+        self.pwm.set_pwm_freq(int(60))
+
+    # Angle setting
+    def SetPos(self,pos):
+        #PCA9685 controls angles with pulses, 150~650 of pulses correspond to 0~180° of angle
+        pulse = int((650-150)/180*pos+150+self.ZeroOffset)
+        self.pwm.set_pwm(self.Channel, 0, pulse)
+
+    # End processing
+    def Cleanup(self):
+        #The servo motor is set at 90°.
+        self.SetPos(int(90))
+        print('90')
+
 if __name__ == '__main__':
-    init()
-    main()
+    Servo0 = servo_Class(Channel=7, ZeroOffset=0)
+
+    try:
+        while True:
+
+            for deg in range(180) :
+                Servo0.SetPos(int(deg))
+                print(deg)
+                time.sleep(0.05)
+
+    except KeyboardInterrupt:
+        print("\nCtl+C")
+    except Exception as e:
+        print(str(e))
+    finally:
+        Servo0.Cleanup()
+
+        print("\nexit program")
