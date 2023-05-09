@@ -10,10 +10,11 @@ sock.connect((ESP32_IP, ESP32_PORT))
 
 # Prepare the request string
 
-def sendData(message)
+def sendData(message):
     request = f"GET /message?message={message} HTTP/1.1\r\nHost: {ESP32_IP}\r\n\r\n"
     sock.sendall(request.encode())
     response = sock.recv(4096).decode()
     print(response)
+    
 
 
