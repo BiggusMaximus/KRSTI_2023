@@ -17,8 +17,8 @@ class ServoPCA9685:
         print('RESET TO 90')
 
 def innitServo():
-    global pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala
-
+    # global pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala
+    global kepala
     # # Kanan
     # pergelangan_tangan_kanan    = ServoPCA9685(0, 0)
     # siku_tangan_kanan           = ServoPCA9685(1, 0)
@@ -31,8 +31,9 @@ def innitServo():
     # pundakEngsel_tangan_kiri    = ServoPCA9685(7, 0)
     # pundakPutar_tangan_kiri     = ServoPCA9685(8, 0)
 
-    kepala                      = ServoPCA9685(7, 0)
-
+    kepala                        = ServoPCA9685(7, 0)
+    print("Servo innit")
+    
 def reset():
     for i in [pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala]:
         i.reset()
