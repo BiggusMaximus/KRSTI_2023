@@ -1,26 +1,39 @@
-import paho.mqtt.client as mqtt 
+import paho.mqtt.client as mqtt
 import time
 
-broker_address="192.168.1.184"
+def on_connect(client, userdata, flags, rc):
+   global flag_connected
+   flag_connected = 1
+   client_subscriptions(client)
+   print("Connected to MQTT server")
 
-def on_message(client, userdata, message):
-    print("message received " ,str(message.payload.decode("utf-8")))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
+def on_disconnect(client, userdata, rc):
+   global flag_connected
+   flag_connected = 0
+   print("Disconnected from MQTT server")
+   
+# a callback functions 
+def callback_esp32_sensor1(client, userdata, msg):
+    print('ESP sensor1 data: ', msg.payload.decode('utf-8'))
 
-def on_log(client, userdata, level, buf):
-    print("log: ",buf)
+def client_subscriptions(client):
+    client.subscribe('KRSTI/data')
 
 
-print("creating new instance")
-client = mqtt.Client("KRI") #create new instance
-client.on_message=on_message #attach function to callback
-print("connecting to broker")
-client.connect(broker_address) #connect to broker
+client = mqtt.Client("rpi_client1") #this should be a unique name
+flag_connected = 0
 
-print("Subscribing to topic")
+client.on_connect = on_connect
+client.on_disconnect = on_disconnect
+client.message_callback_add('KRSTI/data', callback_esp32_sensor1)
+client.connect('127.0.0.1',1883)
+
+client.loop_start()
+client_subscriptions(client)
+print("......client setup complete............")
+
 
 while True:
-    client.subscribe("KRSTI/data")
-    time.sleep(4) # wait
+    time.sleep(4)
+    if (flag_connected != 1):
+        print("trying to connect MQTT server..")
