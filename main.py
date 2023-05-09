@@ -15,15 +15,15 @@ if __name__ == '__main__':
     while True:
         try:
             peak = streamAudio()
-            if peak > 500:
+            if peak > args.thr:
                 print("kontol")
                 kepala.move(180)
-                client_socket.send('Hello, ESP32!'.encode())
+                sendData("kontol")
             else:
                 print("kasu")
                 kepala.move(0)
-                client_socket.send('Hello, ESP32!'.encode())
-            
+                sendData("asu")
+
         except KeyboardInterrupt:
             print('Interrupted')
             closeAudio()
