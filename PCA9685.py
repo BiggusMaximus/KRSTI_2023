@@ -8,9 +8,19 @@ class ServoPCA9685:
         self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
         self.pwm.set_pwm_freq(int(60))
 
-    def move(self, pos):
-        pulse = int((650-150)/180*pos+150+self.ZeroOffset)
-        self.pwm.set_pwm(self.Channel, 0, pulse)
+    def move(self, pos, speed=1.0):
+        current_pos = self.get_position()
+        step = 1 if pos > current_pos else -1
+        delay = 0.01 / speed
+        for i in range(current_pos, pos, step):
+            pulse = int((650 - 150) / 180 * i + 150 + self.ZeroOffset)
+            self.pwm.set_pwm(self.Channel, 0, pulse)
+            time.sleep(delay)
+
+    def get_position(self):
+        pulse = self.pwm.get_pwm(self.Channel)
+        pos = int((pulse - 150 - self.ZeroOffset) * 180 / (650 - 150))
+        return pos
 
     def reset(self):
         self.move(int(90))
