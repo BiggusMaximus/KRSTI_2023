@@ -15,7 +15,7 @@ if __name__ == '__main__':
         try:
             peak = streamAudio()
             if peak > 500:
-                print(kontol)
+                print("kontol")
             
         except KeyboardInterrupt:
             print('Interrupted')
