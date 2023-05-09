@@ -3,7 +3,7 @@ from PCA9685 import *
 import argparse
 
 parser = argparse.ArgumentParser()  
-parser.add_argument("--thr", help='Masukin limit threshold dari suara (0-1023) : ', default=600, type = int)  
+parser.add_argument("--thr", help='Masukin limit threshold dari suara (0-1023) : ', default=500, type = int)  
 
 
 if __name__ == '__main__':
@@ -14,6 +14,8 @@ if __name__ == '__main__':
     while True:
         try:
             peak = streamAudio()
+            if peak > 500:
+                print(kontol)
             
         except KeyboardInterrupt:
             print('Interrupted')

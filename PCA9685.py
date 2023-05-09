@@ -1,16 +1,38 @@
-import time
-import board
-import busio
 import Adafruit_PCA9685
+import time
 
-# Initialize I2C bus and PCA9685 module
-i2c = busio.I2C(board.SCL, board.SDA)
-pca = Adafruit_PCA9685.PCA9685(i2c)
+class ServoPCA9685:
+    def __init__(self, Channel, ZeroOffset):
+        self.Channel = Channel
+        self.ZeroOffset = ZeroOffset
+        self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
+        self.pwm.set_pwm_freq(int(60))
 
-pca.frequency = 50
+    def move(self, pos):
+        pulse = int((650-150)/180*pos+150+self.ZeroOffset)
+        self.pwm.set_pwm(self.Channel, 0, pulse)
 
-def set_servo_angle(channel, angle):
-    pulse_min = 150  
-    pulse_max = 600  
-    pulse_length = int((angle / 180) * (pulse_max - pulse_min) + pulse_min)
-    pca.channels[channel].duty_cycle = pulse_length * 65536 // 4096
+    def reset(self):
+        self.move(int(90))
+        print('RESET TO 90')
+
+def innitServo():
+    global pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala
+
+    # # Kanan
+    # pergelangan_tangan_kanan    = ServoPCA9685(0, 0)
+    # siku_tangan_kanan           = ServoPCA9685(1, 0)
+    # pundakEngsel_tangan_kanan   = ServoPCA9685(2, 0)
+    # pundakPutar_tangan_kanan    = ServoPCA9685(3, 0)
+    
+    # # Kiri
+    # pergelangan_tangan_kiri     = ServoPCA9685(5, 0)
+    # siku_tangan_kiri            = ServoPCA9685(6, 0)
+    # pundakEngsel_tangan_kiri    = ServoPCA9685(7, 0)
+    # pundakPutar_tangan_kiri     = ServoPCA9685(8, 0)
+
+    kepala                      = ServoPCA9685(7, 0)
+
+def reset():
+    for i in [pergelangan_tangan_kanan, siku_tangan_kanan, pundakEngsel_tangan_kanan, pundakPutar_tangan_kanan, pergelangan_tangan_kiri, siku_tangan_kiri, pundakEngsel_tangan_kiri, pundakPutar_tangan_kiri, kepala]:
+        i.reset()
