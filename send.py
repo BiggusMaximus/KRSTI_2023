@@ -35,7 +35,7 @@ client.on_disconnect = on_disconnect
 client.message_callback_add('esp32/sensor1', callback_esp32_sensor1)
 client.message_callback_add('esp32/sensor2', callback_esp32_sensor2)
 client.message_callback_add('rpi/broadcast', callback_rpi_broadcast)
-client.connect('127.0.0.1's)
+client.connect('127.0.0.1')
 # start a new thread
 client.loop_start()
 client_subscriptions(client)
