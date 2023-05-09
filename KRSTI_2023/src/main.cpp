@@ -3,8 +3,8 @@
 const char *ssid = "Butuh wifi";
 const char *password = "mintamulu";
 
-IPAddress serverIP(192, 168, 1, 100); // IP address of the Raspberry Pi
-const int serverPort = 5005;          // port number to use
+IPAddress serverIP(192, 168, 18, 168); // IP address of the Raspberry Pi
+const int serverPort = 5005;           // port number to use
 
 void setup()
 {
