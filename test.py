@@ -25,7 +25,7 @@ class servo_Class:
         print('90')
 
 if __name__ == '__main__':
-    Servo0 = servo_Class(Channel=7, ZeroOffset=0)
+    Servo0 = servo_Class(Channel=6, ZeroOffset=0)
 
     try:
         while True:
