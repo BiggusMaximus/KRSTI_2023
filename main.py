@@ -10,7 +10,7 @@ from adafruit_servokit import ServoKit
 i2c = busio.I2C(board.SCL, board.SDA)
 pca = Adafruit_PCA9685.PCA9685(address=0x40)
 
-servo = ServoKit(channels=16)
+Servo = ServoKit(channels=16)
 
 pca.frequency = 50
 
@@ -22,7 +22,7 @@ def set_servo_angle(channel, angle):
 
 
 if __name__ == '__main__':
-    servo.servo[7].angle = 180
+    Servo.servo[0].angle = 180
     while True:
         try:
             peak = streamAudio()
