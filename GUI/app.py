@@ -33,6 +33,9 @@ servo_objects = []
 degrees_entries = []
 
 for i in range(16):
+    servo_checkboxes.append(tk.BooleanVar())
+    servo_checkboxes[i].set(True)
+
     frame = tk.Frame(root)
     frame.grid(row=i, column=0, sticky="w")
     
@@ -44,9 +47,6 @@ for i in range(16):
     
     servo = ServoPCA9685(i, 0)
     servo_objects.append(servo)
-    
-    servo_checkboxes.append(tk.BooleanVar())
-    servo_checkboxes[i].set(True)
     
     up_button = tk.Button(frame, text="^", command=lambda x=i: servo.move(servo.position.get()+1))
     up_button.grid(row=0, column=2)
