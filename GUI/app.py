@@ -53,12 +53,14 @@ for i in range(N_SERVOS):
     down_button = tk.Button(frame, text="v", command=lambda x=i: servo.move(int(degrees_entries[x].get())-1))
     down_button.grid(row=0, column=3)
     
-    degree_label = tk.Label(frame, text=degrees_entries[i])
-    degree_label.grid(row=0, column=4)
 
     degrees_entries.append(tk.Entry(frame, width=10))
     degrees_entries[i].grid(row=0, column=5)
     degrees_entries[i].insert(0, "90")
+
+    
+    degree_label = tk.Label(frame, text=degrees_entries[i])
+    degree_label.grid(row=0, column=4)
 
 # Create the reset button
 reset_button = tk.Button(root, text="Reset All", command=lambda: [servo.reset() for servo in servo_objects])
