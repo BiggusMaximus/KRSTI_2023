@@ -25,7 +25,7 @@ root.geometry('800x480')
 servo_names = ["Servo 1", "Servo 2", "Servo 3", "Servo 4", "Servo 5", "Servo 6", "Servo 7", "Servo 8", "Servo 9", "Servo 10", "Servo 11", "Servo 12", "Servo 13", "Servo 14", "Servo 15", "Servo 16"]
 
 # Create the servo checkboxes and labels
-servo_checkboxes = []
+servo_checkboxes = [tk.BooleanVar() for i in range(16)]
 servo_labels = []
 servo_objects = []
 degrees_entries = []
