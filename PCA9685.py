@@ -3,7 +3,8 @@ from adafruit_servokit import ServoKit
 
 Servos = ServoKit(channels=16)
 
-Servos.servo[0].angle = 180
-time.sleep(1)
-Servos.servo[0].angle = -180
-time.sleep(1)
+while True:
+	Servos.servo[0].angle = 180
+
+	Servos.servo[0].angle = 90
+

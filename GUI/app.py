@@ -28,19 +28,19 @@ degrees_entries = []
 def up(i):
     global servo_labels
     if servo_checkboxes[i].get():
-        servo_labels[i] = str(int(servo_labels[i]) + 1)
+        servo_labels[i] = str(int(servo_labels[i]) + 5)
         degree_label = servo_objects[i][2]
         degree_label.config(text=servo_labels[i])
-        servos[i].move(int(servo_objects[i][2]))
+        Servos.servo[i].angle = int(servo_objects[i][2])
 
 
 def down(i):
     global servo_labels
     if servo_checkboxes[i].get():
-        servo_labels[i] = str(int(servo_labels[i]) - 1)
+        servo_labels[i] = str(int(servo_labels[i]) - 5)
         degree_label = servo_objects[i][2]
         degree_label.config(text=servo_labels[i])
-        servos[i].move(int(servo_objects[i][2]))
+        Servos.servo[i].angle = int(servo_objects[i][2])
     
 for i in range(16):
     servo_checkboxes.append(tk.BooleanVar())
