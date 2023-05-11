@@ -16,6 +16,7 @@ root.columnconfigure(1, weight=5)
 root.columnconfigure(2, weight=1)
 root.columnconfigure(3, weight=1)
 root.columnconfigure(4, weight=2)
+N_DEGREE = 10
 
 # Define the servo names
 servo_names = ["Servo 1", "Servo 2", "Servo 3", "Servo 4", "Servo 5", "Servo 6", "Servo 7", "Servo 8", "Servo 9", "Servo 10", "Servo 11", "Servo 12", "Servo 13", "Servo 14", "Servo 15", "Servo 16"]
@@ -28,19 +29,28 @@ degrees_entries = []
 def up(i):
     global servo_labels
     if servo_checkboxes[i].get():
-        servo_labels[i] = str(int(servo_labels[i]) + 5)
+        servo_labels[i] = str(int(servo_labels[i]) + N_DEGREE)
+        if int(servo_labels[i]) > 180:
+            servo_labels[i] = "180"
+        elif int(servo_labels[i]) < 0:
+            servo_labels[i] = "0"
+            
         degree_label = servo_objects[i][2]
         degree_label.config(text=servo_labels[i])
-        Servos.servo[i].angle = int(servo_objects[i][2])
+        Servos.servo[i].angle = int(servo_labels[i])
 
 
 def down(i):
     global servo_labels
     if servo_checkboxes[i].get():
-        servo_labels[i] = str(int(servo_labels[i]) - 5)
+        servo_labels[i] = str(int(servo_labels[i]) - N_DEGREE)
+        if int(servo_labels[i]) > 180:
+            servo_labels[i] = "180"
+        elif int(servo_labels[i]) < 0:
+            servo_labels[i] = "0"
         degree_label = servo_objects[i][2]
         degree_label.config(text=servo_labels[i])
-        Servos.servo[i].angle = int(servo_objects[i][2])
+        Servos.servo[i].angle = int(servo_labels[i])
     
 for i in range(16):
     servo_checkboxes.append(tk.BooleanVar())
