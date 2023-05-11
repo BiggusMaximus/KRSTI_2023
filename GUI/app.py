@@ -1,21 +1,9 @@
 import tkinter as tk
-import Adafruit_PCA9685
+import time
+from adafruit_servokit import ServoKit
 import time
 
-class ServoPCA9685:
-    def __init__(self, Channel, ZeroOffset):
-        self.Channel = Channel
-        self.ZeroOffset = ZeroOffset
-        self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
-        self.pwm.set_pwm_freq(int(60))
-
-    def move(self, pos):
-        pulse = int((650-150)/180*pos+150+self.ZeroOffset)
-        self.pwm.set_pwm(self.Channel, 0, pulse)
-
-    def reset(self):
-        self.move(int(90))
-        print('RESET TO 90')
+Servos = ServoKit(channels=16)
 
 root = tk.Tk()
 root.title("PCA9685 Servo Control")
@@ -31,7 +19,6 @@ root.columnconfigure(4, weight=2)
 
 # Define the servo names
 servo_names = ["Servo 1", "Servo 2", "Servo 3", "Servo 4", "Servo 5", "Servo 6", "Servo 7", "Servo 8", "Servo 9", "Servo 10", "Servo 11", "Servo 12", "Servo 13", "Servo 14", "Servo 15", "Servo 16"]
-servos = []
 servo_checkboxes = []
 servo_labels = ["90"] * 16
 servo_objects = []
@@ -56,8 +43,6 @@ def down(i):
         servos[i].move(int(servo_objects[i][2]))
     
 for i in range(16):
-    servo = ServoPCA9685(i, 0)
-    servos.append(servo)
     servo_checkboxes.append(tk.BooleanVar())
     servo_checkboxes[i].set(True)
 
