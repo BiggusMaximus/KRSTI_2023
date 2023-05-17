@@ -1,8 +1,8 @@
 from adafruit_servokit import ServoKit
 import time
 
-t = 0.1
-T_DELAY = 3
+t = 0.95
+T_DELAY = 1
 Servos = ServoKit(channels=16)
 SERVOS_DEGREE = [0, 65, 115, 180, 180, 0, 90, 90, 70]
 
@@ -26,7 +26,7 @@ def gerakMasker():
     order = [4, 6, 2, 8, 3, 7, 1, 9, 5]
     moveOrder(servo_angle, order,t)
 
-'''
+
 def moveOrder(servo_angle, order,t, DELAY_INCREMENT=0.001):
     order = [i-1 for i in order]
     for i in order:
@@ -57,7 +57,7 @@ def moveOrder(servo_angle, order,t, DELAY_INCREMENT=0.01):
                 print("asu")
             
         time.sleep(t)
-        
+'''
 def Tari(t):
     moveBack()
     time.sleep(t)
