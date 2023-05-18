@@ -2,10 +2,11 @@ from adafruit_servokit import ServoKit
 import pandas as pd
 import time
 
-t = 0.95
+t = 0.5
 T_DELAY = 1
 Servos = ServoKit(channels=16)
 stabil_order = [0, 5, 1, 4, 2, 3, 7, 6, 9, 8, 10, 11, 12, 13, 14, 15]
+salam_order = [2, 3, 0, 5, 1, 4, 7, 6, 9, 8, 10, 11, 12, 13, 14, 15]
 
 df = pd.read_csv('./data.csv')
 
@@ -18,14 +19,14 @@ def moveOrder(gerakan, order,t):
 def Tari(t):
     moveOrder("stabil", stabil_order, t)
     print("salam")
-    moveOrder("salam", stabil_order, t)
+    moveOrder("salam", salam_order, t)
     moveOrder("stabil", stabil_order, t)
     print("melambai kiri")
     moveOrder("melambai_kiri", stabil_order, t)
-    moveOrder("stabil", stabil_order, t)
+    moveOrder("salam", salam_order, t)
     print("melambai kanan")
     moveOrder("melambai_kanan", stabil_order, t)
-    moveOrder("stabil", stabil_order, t)
+    moveOrder("salam", salam_order, t)
 
-Tari(T_DELAY)
+Tari(t)
 
