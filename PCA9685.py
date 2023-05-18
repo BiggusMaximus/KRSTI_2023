@@ -17,6 +17,15 @@ def moveOrder(gerakan, order,t):
 
 def Tari(t):
     moveOrder("stabil", stabil_order, t)
+    print("salam")
+    moveOrder("salam", stabil_order, t)
+    moveOrder("stabil", stabil_order, t)
+    print("melambai kiri")
+    moveOrder("melambai_kiri", stabil_order, t)
+    moveOrder("stabil", stabil_order, t)
+    print("melambai kanan")
+    moveOrder("melambai_kanan", stabil_order, t)
+    moveOrder("stabil", stabil_order, t)
 
 Tari(T_DELAY)
 
