@@ -2,7 +2,7 @@ from adafruit_servokit import ServoKit
 import pandas as pd
 import time
 
-t = 0.5
+t = 1
 T_DELAY = 1
 Servos = ServoKit(channels=16)
 stabil_order = [0, 5, 1, 4, 2, 3, 7, 6, 9, 8, 10, 11, 12, 13, 14, 15]
@@ -21,10 +21,12 @@ def Tari(t):
     print("salam")
     moveOrder("salam", salam_order, t)
     moveOrder("stabil", stabil_order, t)
+    time.sleep(1)
     print("melambai kiri")
     moveOrder("melambai_kiri", stabil_order, t)
     moveOrder("salam", salam_order, t)
     print("melambai kanan")
+    time.sleep(1)
     moveOrder("melambai_kanan", stabil_order, t)
     moveOrder("salam", salam_order, t)
 
