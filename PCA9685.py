@@ -25,8 +25,10 @@ df = pd.read_csv('./data.csv')
 def moveOrder(gerakan, order, t, slave=False):
     for i in order:
         if slave:
+            angle_after = df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]
             print(f"slave : {i} => {df[gerakan][master_servo_index[i]]} | master : {master_servo_index[i]} => {df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]}")
-            Servos.servo[master_servo_index[i]].angle = df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]
+            if not (angle_after < 0):
+                Servos.servo[master_servo_index[i]].angle = df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]
         else:
             Servos.servo[i].angle = df[gerakan][i]
         time.sleep(t)
