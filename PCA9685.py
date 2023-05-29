@@ -21,8 +21,24 @@ vampire_order       = [0, 1, 2, 3, 8, 12, 13, 14, 15]
 
 df = pd.read_csv('./data.csv')
 
+def convert_index(order):
+    count = 0
+    new_index = []
+    for i in order:
+        for j in slave_servo_index:
+            if i == j:
+                new_index.append(count)
+                count = 0
+                break
+            else:
+                count += 1
+
+            if count == 8:
+                count = 0
+
 
 def moveOrder(gerakan, order, t, slave=False):
+    order = convert_index(order)
     for i in order:
         if slave:
             angle_after = df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]
