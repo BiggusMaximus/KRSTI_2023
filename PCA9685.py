@@ -38,9 +38,11 @@ def convert_index(order):
 
 
 def moveOrder(gerakan, order, t, slave=False):
+    print(order)
     order = convert_index(order)
+    print(order)
     for i in order:
-        if i != None:
+        if i is not None:
             if slave:
                 angle_after = df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]
                 print(f"slave : {i} => {df[gerakan][master_servo_index[i]]} | master : {master_servo_index[i]} => {df[gerakan][master_servo_index[i]] + k[master_servo_index[i]]}")
